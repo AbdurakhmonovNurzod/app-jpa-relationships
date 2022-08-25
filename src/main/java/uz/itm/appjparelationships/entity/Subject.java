@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +18,19 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false)
     private String name;
+
+    @ManyToMany
+    @JoinTable(name = "student_enrolled",
+    joinColumns = @JoinColumn(name = "subject_id"),
+    inverseJoinColumns = @JoinColumn(name = "student_id"))
+    private List<Student> students;
+
+    public  void enrollStudent(Student student){
+        students.add(student);
+    }
+    public void removeStudent(Student student){
+        students.remove(student);
+    }
 }

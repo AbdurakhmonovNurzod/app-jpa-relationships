@@ -1,5 +1,4 @@
 package uz.itm.appjparelationships.controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uz.itm.appjparelationships.entity.Faculty;
@@ -47,6 +46,30 @@ public class GroupController {
         group.setFaculty(faculty);
         groupRepository.save(group);
         return "added successfully";
+    }
+    @DeleteMapping("/{id}")
+    public String deleteGroup(@PathVariable Integer id){
+        Optional<Group> groupOptional = groupRepository.findById(id);
+        if (groupOptional.isPresent()){
+            Group group = groupOptional.get();
+            groupRepository.delete(group);
+            return "deleted successfully";
+        }
+        return  "there is no group with this name";
+
+    }
+    @PutMapping("/{id}")
+    public String updateGroup(@PathVariable Integer id,@RequestBody GroupLoader groupLoader){
+        Optional<Group> groupOptional = groupRepository.findById(id);
+        if (groupOptional.isPresent()){
+            Group group = groupOptional.get();
+            Faculty faculty = facultyRepository.findById(groupLoader.getFacultyId()).get();
+            group.setName(groupLoader.getName());
+            group.setFaculty(faculty);
+            groupRepository.save(group);
+            return "updated successfully";
+        }
+        return "there is no group with this name";
     }
 
 }

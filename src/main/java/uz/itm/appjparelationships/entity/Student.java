@@ -1,11 +1,13 @@
 package uz.itm.appjparelationships.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+
 
 @Data
 @AllArgsConstructor
@@ -29,6 +31,7 @@ public class Student {
     @ManyToOne
     private Group group;
 
-    @ManyToMany
-    private List<Subject> subjects;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "students")
+    private List<Subject>subjects;
 }
